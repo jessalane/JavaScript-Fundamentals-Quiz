@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Javascript Fundamentals Quiz</title>
+  <link rel="stylesheet" type="text/css" href="./assets/jass.css" />
+  <link rel="stylesheet" type="text/css" href="./assets/style.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&family=Cormorant+SC&family=Titillium+Web&display=swap');
+  </style>
+</head>
+
+<body>
+    <h1>JavaScript Fundamentals</h1>
+    <seciton id="QuizSection">
+        <section id="Questions">
+            <h2 id="startQuiz">CLICK TO START QUIZ</h2>
+            <h2 id="quizQuestion"> Question goes here </h2>
+            <form id="questionsForm">
+                <input type="checkbox" id="op1" name="op1" value="option 1" class="check">
+                <label for="op1" id="ans1"> option1 </label><br>
+
+                <input type="checkbox" id="op2" name="op2" value="option 2" class="check">
+                <label for="op2" id="ans2"> option2 </label><br>
+
+                <input type="checkbox" id="op3" name="op3" value="option 3" class="check">
+                <label for="op3" id="ans3"> option3 </label><br>
+
+                <input type="checkbox" id="op4" name="op4" value="option 4" class="check">
+                <label for="op4" id="ans4"> option4 </label><br>
+                <button type="button" id="next">next question</button>
+            </form>
+
+            <input type="text" id="hScore" name="hScore" placeholder="your initials, and score">
+            <button id="scoreSub">submit</button>
+
+            <div class="correct">correct!</div>
+            <div class="incorrect">incorrect!</div>
+        </section>
+        <section id="stats">
+            <div id="timer">ready set ...</div>
+            <div id="score">current score: 0</div>
+            <div id="highest">last score: -</div>
+
+        </section>
+    </section>
+<script src="./assets/js/javascript.js"></script>
+</body>
+
+</html>
