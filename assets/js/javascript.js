@@ -4,10 +4,11 @@ var i = 0;
 var elem = document.querySelectorAll('input[type=checkbox]');
 var timeLeft = 240;
 var currentScore = 0;
+var storedScore = [];
 var scoreSub = document.querySelector("#scoreSub");
 
 // loading score from local storage 
-document.querySelector("#highest").innerHTML = "last score: " + window.localStorage.getItem("storedScore");
+document.querySelector("#highest").innerHTML = "previous scores: " + window.localStorage.getItem("storedScore");
 
 // Getting the options
 const ans1 = document.getElementById('ans1');
@@ -39,7 +40,28 @@ startQuiz.onclick = function(event) {
     document.getElementById('quizQuestion').style.visibility = 'visible';
 
     checkQuestions();
+    startTimer();
     event.stopPropagation();
+}
+
+function startTimer() {
+    // turning the score into a variable I can edit
+    QScore.textContent = "current score: " + currentScore;
+
+    // setting timer code
+    var timeInterval = setInterval(function () {
+    // subtracting time while the function runs
+    timeLeft--;
+
+    // adding the timer and string to the html
+    QTimer.textContent = timeLeft + " seconds left";
+
+    // clears the timer when it reaches 0
+    if(timeLeft < 0) {
+        clearInterval(timeInterval);
+        QTimer.textContent = "Time is up!";
+    }
+    }, 1000);
 }
 
 // makes correct class appear
@@ -149,24 +171,6 @@ const Questions = [{
 
 // funciton to run the quiz
 function checkQuestions() {
-    // turning the score into a variable I can edit
-    QScore.textContent = "current score: " + currentScore;
-
-    // setting timer code
-    var timeInterval = setInterval(function () {
-    // subtracting time while the function runs
-    timeLeft--;
-
-    // adding the timer and string to the html
-    QTimer.textContent = timeLeft + " seconds left";
-
-    // clears the timer when it reaches 0
-    if(timeLeft < 0) {
-        clearInterval(timeInterval);
-        QTimer.textContent = "Time is up!";
-    }
-    }, 1000);
-
     // runs the function if there are still questions in the array
     if (i < Questions.length && timeLeft > 0) {
         var select = '';
@@ -227,30 +231,44 @@ function checkQuestions() {
                 op3.checked = false;
                 op4.checked = false;
                 timeLeft -= 10;
+                QTimer.textContent = timeLeft + " seconds left";
                 incorrect();
                 checkQuestions();
             }
         }
     } else {
-        clearInterval(timeInterval);
-        QTimer.textContent = "Quiz Complete!";
-
+        // removing the timer
+        // QTimer.textContent = "The Quiz is Complete!";
+        timeLeft -= timeLeft;
+        
         // hide the quiz form 
-        document.getElementById('questionsForm').style.display = 'none';
-        document.getElementById('quizQuestion').style.visibility = 'hidden';
+        document.getElementById("questionsForm").style.display = "none";
+        document.getElementById("quizQuestion").style.visibility = "hidden";
 
         // hide the corred and incorrect declaratsions
-        document.querySelector('.correct').style.display = 'none';
-        document.querySelector('.incorrect').style.display = 'none';
+        document.querySelector(".correct").style.display = "none";
+        document.querySelector(".incorrect").style.display = "none";
 
         // display the score input form
-        document.querySelector('#hScore').style.display = 'block';
-        document.querySelector('#scoreSub').style.display = 'block';
+        document.querySelector("#hScore").style.display = "block";
+        document.querySelector("#scoreSub").style.display = "block";
 
         scoreSub.addEventListener("click", function() {
-            var storedScore = document.querySelector("#hScore").value;
+            var storedScore = localStorage.getItem("storedScore");
+            var newEntry = document.querySelector("#hScore").value;
 
-            localStorage.setItem('storedScore', storedScore);
+            if(storedScore == null) { 
+                storedScore = [];
+                var storedScore = document.querySelector("#hScore").value;
+
+                localStorage.setItem("storedScore", storedScore.toString());
+
+            } else {
+                storedScore = storedScore ? storedScore.split(",") : [];
+
+                storedScore.push(newEntry);
+                localStorage.setItem("storedScore", storedScore.toString());
+            }
         });
     }
 }
